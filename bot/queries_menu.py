@@ -7,8 +7,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from pathlib import Path
 
-from clients.openrouter_client import OpenRouterClient
-from clients.sber_client import SberClient
+from clients import get_llm_client
 from data_parser import FileManager
 from config import settings
 import logging
@@ -146,7 +145,7 @@ async def give_answer(message: types.Message, state: FSMContext):
             cache[user_id] = []
         cache[user_id].append(message.text)
 
-        async with SberClient(owner_id) as client:
+        async with get_llm_client(owner_id) as client:
             response = await client.query(cache[user_id], title)
         cache[user_id].append(response)
 

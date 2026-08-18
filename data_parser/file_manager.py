@@ -5,7 +5,7 @@ from config import settings
 from .converters import FileConverter
 from rag.chunker import chunk_text
 from rag.bge_embedder import BGEEmbedder
-from clients.sber_client import SberClient
+from clients import get_llm_client
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ class FileManager:
     async def add_to_db(text: str, user_id, title):
         chunks_texts = await chunk_text(text)
 
-        async with SberClient(user_id) as client:
+        async with get_llm_client(user_id) as client:
             chunks = await client.format_text_to_chunk(chunks_texts)
             compression_of_layers = [10, 7]
             layers = [chunks]

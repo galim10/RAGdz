@@ -17,6 +17,7 @@ class Settings(BaseSettings):
 
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     openrouter_model: str = "openrouter/free"
+    llm_client: Literal["gigachat", "openrouter"] = "gigachat"
     titles_limit: int = 5
 
     chunks_breakpoint_threshold: int = 25
