@@ -21,7 +21,7 @@ class FileManager:
         chunks_texts = await chunk_text(text)
 
         async with SberClient(user_id) as client:
-            chunks = await client.first_layer_chunking(chunks_texts)
+            chunks = await client.format_text_to_chunk(chunks_texts)
             compression_of_layers = [10, 7]
             layers = [chunks]
             current_layer = 0

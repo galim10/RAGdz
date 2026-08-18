@@ -13,7 +13,7 @@ class Settings(BaseSettings):
 
     embedding_model_name: str = "BAAI/bge-m3"
     gigachat_url: str = "https://api.giga.chat/v1"
-    gigachat_model: str = "GigaChat-2-Max"
+    gigachat_model: str = "GigaChat-3-Ultra"
 
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     openrouter_model: str = "openrouter/free"

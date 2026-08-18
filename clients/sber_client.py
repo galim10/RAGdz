@@ -266,14 +266,16 @@ class SberClient:
         if not history:
             raise ValueError("history не может быть пустой")
 
-        last_message = history[-1]
+        if len(history) == 1:
+            return history[0]
+
         formatted_history = format_history(history)
 
         system_prompt = Messages(role=ROLE_SYSTEM, content=SYSTEM_QUERY_PROMPT)
 
         query_prompt = Messages(
             role=ROLE_USER,
-            content=f,
+            content=formatted_history,
         )
 
         full_request = Chat(
@@ -330,23 +332,7 @@ class SberClient:
         logger.info(f"response: {response}")
         return response.choices[0].message.content
 
-    async def _build_chunking_query(self, chunk_texts: str, starting: int, num_of_chunks: int) -> Chat:
-        return Chat(
-            model=self.model_name,
-            max_tokens=30000,
-            temperature=0.0001,
-            top_p=0.1,
-            response_format=JsonSchemaResponseFormat(
-                schema=FIRST_LAYER_JSON_SCHEMA,
-                strict=True,
-            ),
-            messages=[
-                Messages(role=ROLE_SYSTEM, content=SYSTEM_EXTRACT_METADATA_PROMPT),
-                Messages(role=ROLE_USER, content=format_chunks([chunk_texts], starting, num_of_chunks)),
-            ],
-        )
-
-    async def first_layer_chunking(self, chunk_texts: list[str]):
+    async def format_text_to_chunk(self, chunk_texts: list[str]):
         return [
             Chunk(
                 chunk_texts[i],
@@ -414,7 +400,7 @@ class SberClient:
                 logger.warning(f"Пропускаю блок {i + 1}: не удалось получить валидный JSON от модели")
                 continue
 
-            logger.info(f"Саммари блока {i + 1}: {response.get('summary')}")
+            logger.info(f"Саммари блоков {i + 1}-{i + batch_size}: {response.get('summary')}")
 
             result_chunks.append(Chunk(
                 response.get("summary", ""),
