@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     gigachat_auth_key: str
     gigachat_client_id: str
     openrouter_api_key: str
-    hf_token: str | None = None
     embedding_model_dir: str | None = None
 
     embedding_model_name: str = "BAAI/bge-m3"
