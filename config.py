@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     wiki_url: str = "https://ru.wikisource.org/w/api.php"
     samples_limit: int = 5
     wiki_headers: dict[str, str] = {
-        "User-Agent": "mametodlyaychebi@gmail.com"
+        "User-Agent": "https://github.com/galim10/RAGdz"
     }
 
     data_dir: Path = Path("data_parser")
